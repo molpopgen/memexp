@@ -9,6 +9,9 @@
 struct Data
 {
     double x, y, z;
+    Data(double x, double y, double z) : x{x}, y{y}, z{z}
+    {
+    }
 };
 
 void
@@ -16,8 +19,8 @@ vanilla(const gsl_rng* r, std::size_t nsamples, std::vector<Data>& data)
 {
     for (std::size_t i = 0; i < nsamples; ++i)
         {
-            data.push_back(
-                Data{gsl_rng_uniform(r), gsl_rng_uniform(r), gsl_rng_uniform(r)});
+            data.emplace_back(gsl_rng_uniform(r), gsl_rng_uniform(r),
+                              gsl_rng_uniform(r));
         }
     std::cout << "default behavior: " << data.size() << ' ' << data.capacity() << '\n';
 }
@@ -34,8 +37,8 @@ set_maxinc_after_maxcap(const gsl_rng* r, std::size_t nsamples, std::size_t maxc
                     threshold += maxinc;
                     data.reserve(threshold);
                 }
-            data.push_back(
-                Data{gsl_rng_uniform(r), gsl_rng_uniform(r), gsl_rng_uniform(r)});
+            data.emplace_back(gsl_rng_uniform(r), gsl_rng_uniform(r),
+                              gsl_rng_uniform(r));
         }
     std::cout << "default behavior until " << maxcap << ' '
               << " then increase capacity by " << maxinc << " : " << data.size() << ' '
